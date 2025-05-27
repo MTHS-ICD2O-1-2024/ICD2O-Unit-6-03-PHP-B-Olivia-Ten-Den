@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- ICD2O-Unit 5-08-PHP -->
+<!-- ICD2O-Unit 6-03-PHP -->
 <html lang="en-ca">
 
 <head>
   <meta charset="utf-8" />
-  <meta name="description" content="Divide Two Numbers, in PHP" />
+  <meta name="description" content="Today's Weather, in PHP" />
   <meta name="keywords" content="mths, icd2o" />
   <meta name="author" content="Olivia TD" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -30,7 +30,7 @@
     sizes="16x16"
     href="./favicon-16x16.png" />
   <link rel="manifest" href="./site.webmanifest" />
-  <title>Divide Two Numbers, in PHP</title>
+  <title>Today's Weather, in PHP</title>
 </head>
 
 <body>
@@ -38,32 +38,42 @@
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
-        <span class="mdl-layout-title">Divide Two Numbers, in PHP</span>
+        <span class="mdl-layout-title">Today's Weather, in PHP</span>
       </div>
     </header>
     <main class="mdl-layout__content">
       <div class="right-image">
-        <img src="./images/division.png" alt="Image a long division equation." />
+        <div id="weather-image"></div>
       </div>
       <div class=" page-content-php">
-        <div id="user-info">
+        <div id="weather">
 
+          <!--
+          const weatherJSON = await fetch(
+          "https://api.openweathermap.org/data/2.5/weather?lat=45.4211435&lon=-75.6900574&appid=fe1d80e1e103cff8c6afd190cad23fa5"
+          )
+          const jsonWeatherData = await weatherJSON.json()
+          const icon = jsonWeatherData.weather[0].icon
+          const kelvinTemperature = jsonWeatherData.main.temp
+          const celsuisTemperature = kelvinTemperature - 273.15
+          const celsuisTemperatureRounded = Math.round(celsuisTemperature)
+          -->
           <?php
-          // input
-          $counter = 0;
-          $firstInteger  = intval($_GET["integer-one"]);
-          $answer = $firstInteger;
-          $secondInteger  = intval($_GET["integer-two"]);
-
-          while (true) {
-            if ($answer < $secondInteger) {
-              break;
-            } else {
-              $answer = $answer - $secondInteger;
-              $counter = $counter + 1;
-            }
+          try {
+            $weatherJSON = "https://api.openweathermap.org/data/2.5/weather?lat=45.4211435&lon=-75.6900574&appid=fe1d80e1e103cff8c6afd190cad23fa5";
+            $jsonWeatherData = file_get_contents($weatherJSON);
+            $phpWeatherData = json_decode($jsonWeatherData);
+            $icon = $phpWeatherData->weather[0]->icon;
+            $iconImage = "https://openweathermap.org/img/wn/" . $icon . "@2x.png";
+            $kelvinTemperature = $phpWeatherData->main->temp;
+            $celsuisTemperature = $kelvinTemperature - 273.15;
+            $celsuisTemperatureRounded = round($celsuisTemperature);
+            echo "<img src = \"" . $iconImage . "\">";
+            echo "<p> The current temperature is " . $celsuisTemperatureRounded . " °C.</p>";
           }
-          echo "<p>The quotient is " . $counter . ", remainder " . $answer . ".</p>";
+          catch (error) {
+            "<p> The weather information source is not working at this moment. </p>";
+          }
           ?>
 
         </div>
