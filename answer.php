@@ -68,7 +68,7 @@
             $kelvinTemperature = $phpWeatherData->main->temp;
             $celsuisTemperature = $kelvinTemperature - 273.15;
             $celsuisTemperatureRounded = round($celsuisTemperature);
-            echo "<img src = \"" . $iconImage . "\">";
+            echo "<img src = $iconImage >";
             echo "<p> The current temperature is " . $celsuisTemperatureRounded . " °C.</p>";
           }
           catch (error) {
